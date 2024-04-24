@@ -502,7 +502,7 @@ class WheelRepair:
                     item_lower = item.lower()
                     if item_lower.endswith('.py') and item_lower != '__init__.py':
                         self._patch_py_file(item_path, libs_dir, load_order_filename, depth)
-                    elif item_lower.endswith('.pyd'):
+                    elif item_lower.endswith('.pyd') or item_lower.endswith('.dll'):
                         namespace_root_ext_modules.add(item_path)
                 elif os.path.isdir(item_path) and \
                         (item not in self._root_level_module_names(package_dir) or self._get_init(item_path)):
@@ -626,7 +626,7 @@ class WheelRepair:
             if root == self._data_dir:
                 dirnames[:] = set(dirnames) & {'platlib', 'purelib'}
             for filename in filenames:
-                if filename.lower().endswith('.pyd'):
+                if filename.lower().endswith('.pyd') or filename.lower().endswith('.dll'):
                     extension_module_path = os.path.join(root, filename)
                     extension_module_paths.append(extension_module_path)
                     discovered, _, ignored, not_found = _dll_utils.get_all_needed(extension_module_path, self._no_dlls, self._wheel_dirs, 'ignore', False, False, self._verbose)
@@ -731,7 +731,7 @@ class WheelRepair:
             if root == self._data_dir:
                 dirnames[:] = set(dirnames) & {'platlib', 'purelib'}
             for filename in filenames:
-                if filename.lower().endswith('.pyd'):
+                if filename.lower().endswith('.pyd') or filename.lower().endswith('.dll'):
                     extension_module_path = os.path.join(root, filename)
                     dll_arch = _dll_utils.get_arch(extension_module_path)
                     if dll_arch != self._arch:
